@@ -4,15 +4,11 @@ title: About
 permalink: /about/
 ---
 
-This is the base Jekyll theme. You can find out more info about customizing your Jekyll theme, as well as basic Jekyll usage documentation at [jekyllrb.com](https://jekyllrb.com/)
+Hi! I'm Patrick, a junior in [CS](cs.uw.edu) and [ecomonics](econ.uw.edu)
+at the [University of Washington](uw.edu). This site functions both as my personal site
+and as a collection of blog posts about projects/research I've worked on. 
 
-You can find the source code for Minima at GitHub:
-[jekyll][jekyll-organization] /
-[minima](https://github.com/jekyll/minima)
+My big interests are in machine learning and game theory. I work in the MODE Lab at UW
+on neuro-science focused state space models. 
 
-You can find the source code for Jekyll at GitHub:
-[jekyll][jekyll-organization] /
-[jekyll](https://github.com/jekyll/jekyll)
-
-
-[jekyll-organization]: https://github.com/jekyll
+Both my Github and email address can be found in the footer below. 
