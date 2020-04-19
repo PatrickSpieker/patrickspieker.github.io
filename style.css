@@ -11,5 +11,10 @@ h1,h2 {
 
 p {
     font-family: tahoma;
-    font-size: 20px;
+    font-size: 16px;
+}
+
+li {
+    font-family: tahoma;
+    font-size: 16px; 
 }
