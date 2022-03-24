@@ -5,6 +5,74 @@
       </head>
       <body>
     <div>
+    <h2>The Rails Project - Part 2</h2>
+    <h4>2022-03-23</h4>
+
+    <p><br>I've modified things slightly - probably not going to host this on RonSpieker.com, but the idea will be similar. <br><br>Starting off - I'm going to create a Droplet on DigitalOcean, and kick off a little web-server running on it. <br><br>First, I'm going to use SSH to connect to it, so I need to give DigitalOcean my SSH public key. It'll be on Debian.<br><br>Yay! It's working:<br></p><img src="assets/its_working.png"><p><br>Found this [0] tutorial which is helpful as well. Created a new user, and added that user to the sudo group. <br><br>Next is creating a firewall (oooooooo). The tutorial calls for "ufw":<br></p>
+    <pre><code>
+    
+apt install ufw
+
+    </code></pre>
+    <p>Then, we go ahead and allow OpenSSH (a preconfigured set of rules) thru the firewall with:<br></p>
+    <pre><code>
+    
+ufw enable OpenSSH
+
+    </code></pre>
+    <p>Finally we enable the firewall:<br></p>
+    <pre><code>
+    
+ufw enable
+
+    </code></pre>
+    <p><br>Next - we want to be able to SSH into our other user, so we add our SSH public key into our other user's (called memer) directory with:<br></p>
+    <pre><code>
+    
+cp -r ~/.ssh/authorized_keys /home/memer/
+
+    </code></pre>
+    <p><br>Cool! Now on to actually installing Apache:<br></p>
+    <pre><code>
+    
+sudo apt install apache2
+
+    </code></pre>
+    <p>Now opening just port 80 via the "WWW" firewall rule:<br></p>
+    <pre><code>
+    
+sudo ufw allow WWW
+
+    </code></pre>
+    <p><br>Apparently, when the install exits, Apache starts? And we can use the systemctl command to check its status:<br></p>
+    <pre><code>
+    
+sudo systemctl status apache2
+
+    </code></pre>
+    <p>This shows it as running!<br><br>Now - going to try to hit the server by going to the IP. <br><br>YAYYY! It works:<br></p><img src="assets/apache_landing.png"><p><br>[0] https://www.digitalocean.com/community/tutorials/initial-server-setup-with-debian-10<br></p>
+    </div><div>
+    <h2>RonSpieker.com - The Rails Project - Part 1</h2>
+    <h4>2022-03-16</h4>
+
+    <p><br>Starting work on the project! Step 1 - get _something_ deployed end to end so it's reachable on www.ronspieker.com - then go from there and iterate. This part may be more about DNS than about Rails.<br><br>So I've purchase ronspieker.com, and what I want is:<br></p>
+    <pre><code>
+    
+# Go to ronspieker.com
+# See a custom index.html page that's on my Digital Ocean droplet
+
+    </code></pre>
+    <p><br>Digging through Digital Ocean's documentation, I found this [0]:<br>> DNS is what allows you to direct a domain name to the web server hosting that domain’s content, for example.<br><br>But I don't think I need to actually use Digital Ocean's domain management - I should be able to just point easyDNS's control panel to the correct server. Reading from a blog post on Digital Ocean's forums (with an answer from a Digital Ocean employee):<br>>  If you’re using external nameservers (different from ns1.digitalocean.com) you need to make the DNS change from where you active DNS zone is. This can be your registrar or any other hosting provider you use as well.<br>> Your droplet IP will not be changed, so you can safely create an A record in the registrar’s DNS panel.<br><br>Great! So the steps here look like:<br></p>
+    <pre><code>
+    
+# Spin up a droplet
+# Figure out how to start a webserver on it
+# Test out hitting the raw IP
+# Use the easyDNS website to create an A record pointing ronspieker.com to the droplet's IP
+
+    </code></pre>
+    <p><br>Now I'm curious as how to start a web server on the droplet. Reading the tutorial here [2] - seems to be exactly what I want to do; covers most of the steps above. <br><br><br>[0] https://docs.digitalocean.com/tutorials/dns-registrars/<br>[1] https://www.digitalocean.com/community/questions/how-to-point-dns-to-droplet<br>[2] https://www.digitalocean.com/community/tutorials/how-to-deploy-a-rails-app-with-passenger-and-apache-on-ubuntu-14-04<br></p>
+    </div><div>
     <h2>Deploying Rails in 2022</h2>
     <h4>2022-03-14</h4>
 
