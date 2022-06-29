@@ -1,0 +1,14 @@
+{
+	"version": 3,
+	"file": "styles.css",
+	"sources": [
+		"styles.scss",
+		"_sass/main.scss"
+	],
+	"sourcesContent": [
+		"@import \"main\";\n",
+		".current {\n  color: blue;\n}\nbody {\n    background-color: #e5e5e5;\n    margin-left: 15vw;\n    margin-right: 15vw;\n    margin-top: 5vw;\n}\n\nh1,h2 {\n    font-family: tahoma;\n}\n\np {\n    font-family: tahoma;\n    font-size: 16px;\n}\n\nli {\n    font-family: tahoma;\n    font-size: 16px; \n}\n\na {\n   font-family: tahoma;\n}\n"
+	],
+	"names": [],
+	"mappings": "ACAA,AAAA,QAAQ,CAAC,EACP,KAAK,EAAE,IAAI,GACZ;;AACD,AAAA,IAAI,CAAC,EACD,gBAAgB,EAAE,OAAO,EACzB,WAAW,EAAE,IAAI,EACjB,YAAY,EAAE,IAAI,EAClB,UAAU,EAAE,GAAG,GAClB;;AAED,AAAA,EAAE,EAAC,EAAE,CAAC,EACF,WAAW,EAAE,MAAM,GACtB;;AAED,AAAA,CAAC,CAAC,EACE,WAAW,EAAE,MAAM,EACnB,SAAS,EAAE,IAAI,GAClB;;AAED,AAAA,EAAE,CAAC,EACC,WAAW,EAAE,MAAM,EACnB,SAAS,EAAE,IAAI,GAClB;;AAED,AAAA,CAAC,CAAC,EACC,WAAW,EAAE,MAAM,GACrB"
+}
