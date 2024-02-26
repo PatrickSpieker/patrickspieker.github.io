@@ -5,7 +5,13 @@ body {
     margin-top: 5vw;
 }
 
-h1,h2 {
+/*
+This prevents links from being blue or purple
+*/
+a {
+    color: black
+}
+h1,h2,h3,h4,h5,h6 {
     font-family: tahoma;
 }
 
