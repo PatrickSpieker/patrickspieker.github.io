@@ -18,7 +18,7 @@ jobs:
           curl -s "https://github.com/users/PatrickSpieker/contributions" -o /tmp/contrib.html
           python3 << 'PYEOF'
           import re
-          from datetime import datetime
+          from datetime import datetime, timedelta
 
           with open("/tmp/contrib.html") as f:
               html = f.read()
@@ -29,6 +29,9 @@ jobs:
 
           colors = ["#ebedf0", "#9be9a8", "#40c463", "#30a14e", "#216e39"]
           days.sort(key=lambda d: d[0])
+          last_date = datetime.strptime(days[-1][0], "%Y-%m-%d")
+          cutoff = last_date - timedelta(days=91)
+          days = [(d, l) for d, l in days if datetime.strptime(d, "%Y-%m-%d") >= cutoff]
           first_date = datetime.strptime(days[0][0], "%Y-%m-%d")
 
           cell_size = 11
