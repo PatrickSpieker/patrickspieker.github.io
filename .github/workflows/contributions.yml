@@ -31,6 +31,8 @@ jobs:
           days.sort(key=lambda d: d[0])
           last_date = datetime.strptime(days[-1][0], "%Y-%m-%d")
           cutoff = last_date - timedelta(days=91)
+          cutoff_dow = (cutoff.weekday() + 1) % 7  # align to previous Sunday
+          cutoff = cutoff - timedelta(days=cutoff_dow)
           days = [(d, l) for d, l in days if datetime.strptime(d, "%Y-%m-%d") >= cutoff]
           first_date = datetime.strptime(days[0][0], "%Y-%m-%d")
 
