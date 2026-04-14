@@ -1,0 +1,91 @@
+name: Update GitHub Contributions Graph
+
+on:
+  schedule:
+    - cron: '0 * * * *'
+  workflow_dispatch:
+
+jobs:
+  update-contributions:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Fetch and generate contributions SVG
+        run: |
+          curl -s "https://github.com/users/PatrickSpieker/contributions" -o /tmp/contrib.html
+          python3 << 'PYEOF'
+          import re
+          from datetime import datetime
+
+          with open("/tmp/contrib.html") as f:
+              html = f.read()
+
+          days = re.findall(r'data-date="(\d{4}-\d{2}-\d{2})"[^>]*data-level="(\d)"', html)
+          if not days:
+              raise SystemExit("No contribution data found")
+
+          colors = ["#ebedf0", "#9be9a8", "#40c463", "#30a14e", "#216e39"]
+          days.sort(key=lambda d: d[0])
+          first_date = datetime.strptime(days[0][0], "%Y-%m-%d")
+
+          cell_size = 11
+          cell_gap = 2
+          total = cell_size + cell_gap
+          margin_left = 30
+          margin_top = 20
+
+          weeks = {}
+          for date_str, level in days:
+              dt = datetime.strptime(date_str, "%Y-%m-%d")
+              week = (dt - first_date).days // 7
+              gh_dow = (dt.weekday() + 1) % 7
+              weeks.setdefault(week, {})[gh_dow] = (date_str, int(level))
+
+          num_weeks = max(weeks.keys()) + 1
+
+          month_labels = []
+          prev_month = None
+          for w in range(num_weeks):
+              if 0 in weeks.get(w, {}):
+                  dt = datetime.strptime(weeks[w][0][0], "%Y-%m-%d")
+                  month = dt.strftime("%b")
+                  if month != prev_month:
+                      month_labels.append((w, month))
+                      prev_month = month
+
+          day_labels = [(1, "Mon"), (3, "Wed"), (5, "Fri")]
+          width = margin_left + num_weeks * total + 10
+          height = margin_top + 7 * total + 10
+
+          svg = [
+              f'<svg xmlns="http://www.w3.org/2000/svg" width="{width}" height="{height}" viewBox="0 0 {width} {height}">',
+              '<style>text { fill: #767676; font-size: 10px; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; }</style>',
+          ]
+          for w, label in month_labels:
+              svg.append(f'<text x="{margin_left + w * total}" y="{margin_top - 6}">{label}</text>')
+          for dow, label in day_labels:
+              svg.append(f'<text x="0" y="{margin_top + dow * total + 9}" text-anchor="start">{label}</text>')
+          for w, dow_data in weeks.items():
+              for dow, (date_str, level) in dow_data.items():
+                  x = margin_left + w * total
+                  y = margin_top + dow * total
+                  svg.append(
+                      f'<rect x="{x}" y="{y}" width="{cell_size}" height="{cell_size}" '
+                      f'rx="2" ry="2" fill="{colors[level]}"/>'
+                  )
+          svg.append('</svg>')
+
+          with open("contributions.svg", "w") as f:
+              f.write("\n".join(svg))
+          print(f"Generated: {len(days)} days, {num_weeks} weeks")
+          PYEOF
+
+      - name: Commit and push if changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add contributions.svg
+          git diff --cached --quiet || (git commit -m "chore: update contributions graph" && git push)
