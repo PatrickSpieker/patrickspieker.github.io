@@ -1,0 +1,22 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getCollection } from 'astro:content';
+
+const essays = (await getCollection('essays')).sort(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
+);
+---
+
+<Base title="Essays">
+  <h1>Essays</h1>
+  <ul>
+    {essays.map((essay) => (
+      <li>
+        <a href={`/essays/${essay.id}`}>{essay.data.title}</a>
+        <span style="color: #666; margin-left: 0.5rem;">
+          ({essay.data.date.toISOString().split('T')[0]})
+        </span>
+      </li>
+    ))}
+  </ul>
+</Base>
