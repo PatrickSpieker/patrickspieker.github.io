@@ -15,7 +15,9 @@ jobs:
 
       - name: Fetch and generate contributions SVG
         run: |
-          curl -s "https://github.com/users/PatrickSpieker/contributions" -o /tmp/contrib.html
+          curl --fail --silent --show-error --location \
+            --retry 4 --retry-delay 5 --connect-timeout 15 --max-time 60 \
+            "https://github.com/users/PatrickSpieker/contributions" -o /tmp/contrib.html
           python3 << 'PYEOF'
           import re
           from datetime import datetime, timedelta
